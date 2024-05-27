@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <header>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}"/>
+        <script src="{{ url_for('static', filename='script.js') }}"></script>
+        <style>
+            #{{filtre}} {
+                background-color: #666; /* Nouvelle couleur de fond */
+                font-weight: bold; /* Texte en gras */
+            }
+        </style>
+    </header>
+    <body>
+        <h1>Todos</h1>
+        {% if error %}
+            <h1>Une tâche de même titre existe déjà</h1>
+        {% endif %}
+        <nav>
+            <ul>
+                <li><a href="/create">+</a></li>
+                <li id="all"><a href="/change/all">Tous</a></li>
+                <li id="processing"><a href="/change/processing">En cours</a></li>
+                <li id="completed"><a href="/change/completed">Terminées</a></li>
+                <li id="deleted"><a href="/change/deleted">Corbeille</a></li>
+                <li><a href="/vider_corbeille">Vider la corbeille</a></li>
+            </ul>
+        </nav>
+        <main>
+            <ul>
+                {% for todo in todos %}
+                    <li>    
+                        <form action="/cocher/{{ todo.get_title() }}" method="post" id="{{ todo.get_title() }}">
+                            <input type="checkbox" class="{{ todo.get_etat() }}" name="checkbox" onchange="cocher('{{ todo.get_title() }}')"/>
+                        </form>
+                            <h2>{{ todo.get_title() }}</h2> 
+                            <p>{{ todo.get_description() }}</p>
+                        
+                            {% if filtre != "deleted" %}
+                                <form action="/supprimer/{{ todo.get_title() }}">
+                                    <input type="submit" value="Supprimer">
+                                </form>
+
+                                <form action="/edit/{{todo.get_title()}}/{{todo.get_description()}}">
+                                    <input type="submit" value="Modifier">
+                                </form>
+                            {% else %}
+                                <form action="/restore/{{todo.get_title()}}">
+                                    <input type="submit" value="Restaurer">
+                                </form>
+                            {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+        </main>
+    </body>
+</html>

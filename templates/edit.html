@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <header>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}"/>
+        <title>Edit Todo</title>
+    </header>
+    <body>
+        <h1>Edit Todo</h1>
+        <form action="/edit/{{titre}}/{{description}}" method="post">
+            <label for="title">Titre:</label><br>
+            <input type="text" id="title" name="title" value="{{titre}}" required><br>
+            
+            <label for="description">Description:</label><br>
+            <input type="text" id="description" name="description" value="{{description}}" required><br>
+            
+            <input type="submit" value="Create">
+        </form>
+    </body>
+</html>
